@@ -1,3 +1,6 @@
+using MongoDB.Bson;
+using MongoDB.Driver;
+
 
 namespace WebLab2_.NETAPI
 {
@@ -26,6 +29,8 @@ namespace WebLab2_.NETAPI
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+
+            var MongoClient = new MongoClient("mongodb://localhost:5013");
 
 
             var potatisar = new List<Potatis>
@@ -96,6 +101,7 @@ namespace WebLab2_.NETAPI
             });
 
             app.Run();
+
         }
     }
 }
