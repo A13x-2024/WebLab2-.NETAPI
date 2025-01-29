@@ -1,6 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
-
+using WebLab2_.NETAPI.Models;
+using WebLab2_.NETAPI.Services;
 
 namespace WebLab2_.NETAPI
 {
@@ -30,73 +31,61 @@ namespace WebLab2_.NETAPI
 
             app.UseAuthorization();
 
-            var MongoClient = new MongoClient("mongodb://localhost:5013");
-
-
-            var potatisar = new List<Potatis>
-            {
-                new Potatis { Id = 1, Name = "Potato", Type = "Normal", Rank = 100 },
-                new Potatis { Id = 2, Name = "Mega-Potato", Type = "Stronk", Rank = 500 },
-                new Potatis { Id = 3, Name = "Sanctified-Potato", Type = "Holy", Rank = 777 },
-                new Potatis { Id = 4, Name = "Kakashi-Potato", Type = "Legendary", Rank = 9000 }
-            };
-
 
 
             //Create
-            app.MapPost("/potatis", (Potatis potatis) =>
+            app.MapPost("/potatis", async (PotatoServices service) =>
             {
-                potatisar.Add(potatis);
-                return Results.Ok(potatis);
+                var newPotatis = await service.CreateAsync(new Potatis());
+                return Results.Ok(newPotatis);
             });
 
 
-            //Read all
-            app.MapGet("/potatisar", () =>
+            //Get
+            app.MapGet("/potatisar", async (PotatoServices service) =>
             {
+                var potatisar = await service.GetAsync();
                 return Results.Ok(potatisar);
             });
 
 
-            //Read by ID
-            app.MapGet("/potatis/{id}", (int id) =>
+            //Get by ID
+            app.MapPut("/potatis{id}", async (PotatoServices service, int id) =>
             {
-                var potatis = potatisar.Find(p => p.Id == id);
-                if (potatis == null)
+                var storedPotatis = await service.GetByIdAsync(id);
+                if (storedPotatis == null)
                 {
-                    return Results.NotFound("Sorry, this potatis does not exist.");
+                    return Results.NotFound();
                 }
-
-                return Results.Ok(potatis);
+                await service.GetByIdAsync(id);
+                return Results.Ok(storedPotatis);
             });
 
 
             //Update
-            app.MapPut("/potatis/{id}", (Potatis updatePotatis, int id) =>
+            app.MapPut("/potatis/{id}", async (PotatoServices service, Potatis updatedPotatis, int id) =>
             {
-                var potatis = potatisar.Find(p => p.Id == id);
-                if (potatis == null)
+                var storedPotatis = await service.GetByIdAsync(id);
+                if (storedPotatis == null)
                 {
                     return Results.NotFound("Sorry, this potatis does not exist.");
-                };
-
-                potatisar[id - 1] = updatePotatis;
-
-                return Results.Ok(potatis);
+                }
+                await service.UpdateAsync(id, updatedPotatis);
+                return Results.Ok(storedPotatis);
 
             });
 
 
             //Delete
-            app.MapDelete("/potatis/{id}", (int id) =>
+            app.MapDelete("/potatis{id}", async (PotatoServices service, int id) =>
             {
-                var potatis = potatisar.Find(p => p.Id == id);
-                if (potatis == null)
-                {
-                    return Results.NotFound("Sorry, this potatis does not exist.");
-                };
+                var potatisar = await service.GetByIdAsync(id);
 
-                potatisar.Remove(potatis);
+                if (potatisar == null)
+                {
+                    return Results.NotFound();
+                }
+                await service.RemoveAsync(id);
                 return Results.Ok();
             });
 
