@@ -41,7 +41,7 @@ namespace WebLab2_.NETAPI.Data
 
 
         //Update potato
-        public async Task<string> UpdatePotato(string table, string id, Potatoes potato)
+        public async Task<string> UpdatePotatoById(string table, string id, Potatoes potato)
         {
             var Collection = _potato.GetCollection<Potatoes>(table);
             var update = Builders<Potatoes>.Update
@@ -54,7 +54,7 @@ namespace WebLab2_.NETAPI.Data
 
 
         //Delete potato
-        public async Task<string> DeletePotato(string table, String id)
+        public async Task<string> DeletePotatoById(string table, String id)
         {
             var Collection = _potato.GetCollection<Potatoes>(table);
             var potato = await Collection.DeleteOneAsync(x => x.Id == id);

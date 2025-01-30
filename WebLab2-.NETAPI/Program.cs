@@ -62,7 +62,7 @@ namespace WebLab2_.NETAPI
             //Update
             app.MapPut("/potato/{id}", async (string id, Potatoes potato) =>
             {
-                var potatoDB = await _potato.UpdatePotato("Potatoes", id, potato);
+                var potatoDB = await _potato.UpdatePotatoById("Potatoes", id, potato);
                 return Results.Ok(potatoDB);
             });
 
@@ -70,7 +70,7 @@ namespace WebLab2_.NETAPI
             //Delete
             app.MapDelete("/potato/{id}", async (string id) =>
             {
-                var potato = await _potato.DeletePotato("Potatoes", id);
+                var potato = await _potato.DeletePotatoById("Potatoes", id);
                 return Results.Ok(potato);
             });
 

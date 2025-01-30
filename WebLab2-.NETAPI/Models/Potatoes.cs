@@ -12,13 +12,13 @@ namespace WebLab2_.NETAPI.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         
-        [BsonElement("Name")]
+        [BsonElement("Name")] //Kakashi-Potato
         public string Name { get; set; }
         
-        [BsonElement("Type")]
+        [BsonElement("Type")] //Legendary
         public string Type { get; set; }
 
-        [BsonElement("Rank")]
+        [BsonElement("Rank")] //9001 (over 9000)
         public int Rank { get; set; }
 
     }
