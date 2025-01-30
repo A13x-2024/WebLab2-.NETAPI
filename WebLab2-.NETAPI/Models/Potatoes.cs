@@ -6,11 +6,11 @@ using MongoDB.Driver;
 
 namespace WebLab2_.NETAPI.Models
 {
-    public class Potatis
+    public class Potatoes
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public int Id { get; set; }
+        public string Id { get; set; }
         
         [BsonElement("Name")]
         public string Name { get; set; }
