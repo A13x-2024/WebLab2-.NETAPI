@@ -1,0 +1,6 @@
+@WebLab2_.NETAPI_HostAddress = http://localhost:5013
+
+GET {{WebLab2_.NETAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
